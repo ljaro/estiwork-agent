@@ -8,7 +8,7 @@ import tarfile
 import platform
 import shutil
 import subprocess
-
+import platform
 
 DIR_DOWNLOADS 	= 'downloads'
 DIR_THRIFT_DEP	= 'third_party'
@@ -72,7 +72,7 @@ if not os.path.exists(os.path.join(DIR_THRIFT_DEP,'libevent-release-2.0.21-stabl
 
 if os.path.exists(os.path.join(DIR_THRIFT_DEP,'libevent-release-2.0.21-stable')):		
 	if not os.path.exists(os.path.join(DIR_THRIFT_DEP,'libevent-2.0.21-stable')):				
-		os.system('ln -s '+os.path.join('.',DIR_THRIFT_DEP,'libevent-release-2.0.21-stable'+os.sep)+' '+os.path.join('.',DIR_THRIFT_DEP,'libevent-2.0.21-stable'+os.sep))		
+		os.system('ln -r -s '+os.path.join('.',DIR_THRIFT_DEP,'libevent-release-2.0.21-stable'+os.sep)+' '+os.path.join('.',DIR_THRIFT_DEP,'libevent-2.0.21-stable'))
 
 os.environ['LIBEVENT_ROOT_DIR'] = os.path.join(DIR_THRIFT_DEP,'libevent-release-2.0.21-stable')
 
@@ -110,15 +110,15 @@ if not os.path.exists(os.path.join(DIR_THRIFT_DEP,'boost_1_61_0.zip')):
     
 if not os.path.exists(os.path.join(DIR_THRIFT_DEP,'boost','boost_1_61_0')):  
     with zipfile.ZipFile(os.path.join(DIR_THRIFT_DEP,'boost_1_61_0.zip'), 'r') as myzip:
-        print 'Extracting'
-        myzip.extractall(os.path.join(DIR_THRIFT_DEP,'boost'))
+        print 'Extracting boost_1_61_0.zip'
+        myzip.extractall(u'\\\\?\\'+os.path.abspath(os.path.join(DIR_THRIFT_DEP,'boost')))
         myzip.close()
+		
+os.system('ln -r -s '+os.path.join('.',DIR_THRIFT_DEP,'boost','boost_1_61_0')+' '+os.path.join('.',DIR_THRIFT_DEP,'boost','boost_1_47_0'))
 
-cmd0 = '"C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\vcvarsall.bat"'
 cmd1 = 'msbuild libthrift.vcxproj /t:Build /p:Configuration=Debug-mt /p:OutputPath=..\..\..\lib'
 cmd2 = 'msbuild libthriftnb.vcxproj /t:Build /p:Configuration=Debug-mt /p:OutputPath=..\..\..\lib'
 cmd3 = 'msbuild thrift.sln /t:Build /p:Configuration=Debug-mt /p:"OutputPath=.\\xxx" '
-# os.system(cmd0)
 
 os.chdir("third_party\\boost\\boost_1_61_0")
 os.system("bootstrap.bat")
